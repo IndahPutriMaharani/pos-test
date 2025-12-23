@@ -13,7 +13,7 @@
         <div class="row">
 
             @foreach($menus as $menu)
-            <div class="col-md-3 mb-3">
+            <div class="col-6 col-md-4 col-lg-3 mb-4">
                 <div class="card h-100 text-center shadow-sm menu-card"
                      style="cursor:pointer"
                      data-id="{{ $menu->id }}"
