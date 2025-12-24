@@ -107,64 +107,65 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="chargeModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Charge</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Total Belanja:
+                    <strong>Rp @{{ subtotal.toLocaleString() }}</strong>
+                </p>
+        
+                <div class="mb-3">
+                    <label>Biaya Tambahan / Denda</label>
+                    <input type="number"
+                        class="form-control"
+                        v-model.number="fee"
+                        min="0">
+                </div>
+        
+                <p class="fw-bold">
+                    Keseluruhan Harga:
+                    <span class="text-success">
+                        Rp @{{ total.toLocaleString() }}
+                    </span>
+                </p>
+        
+                <div class="mb-3">
+                    <label>Uang Pembeli</label>
+                    <input type="number"
+                        class="form-control"
+                        v-model.number="cash"
+                        min="0">
+        
+                    <p class="mt-2">
+                        Kembalian:
+                        <strong :class="cash < total ? 'text-danger' : 'text-success'">
+                            Rp @{{ change.toLocaleString() }}
+                        </strong>
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success"
+                        :disabled="cash < total"
+                        @click="confirmCharge">
+                    OK
+                </button>
+            </div>
+            </div>
+        </div>
+        </div>
     </div>
 </div>
 
-<div class="modal fade" id="chargeModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Charge</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <p>
-            Total Belanja:
-            <strong>Rp @{{ subtotal.toLocaleString() }}</strong>
-        </p>
 
-        <div class="mb-3">
-            <label>Biaya Tambahan / Denda</label>
-            <input type="number"
-                class="form-control"
-                v-model.number="fee"
-                min="0">
-        </div>
 
-        <p class="fw-bold">
-            Total Charge:
-            <span class="text-success">
-                Rp @{{ total.toLocaleString() }}
-            </span>
-        </p>
-
-        <div class="mb-3">
-            <label>Uang Pembeli</label>
-            <input type="number"
-                class="form-control"
-                v-model.number="cash"
-                min="0">
-
-            <p class="mt-2">
-                Kembalian:
-                <strong :class="cash < total ? 'text-danger' : 'text-success'">
-                    Rp @{{ change.toLocaleString() }}
-                </strong>
-            </p>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-success"
-                :disabled="cash < total"
-                @click="confirmCharge">
-            OK
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
+{{-- <script>
 function showAlert(message, type = 'success') {
     const alertContainer = document.getElementById('alert-container');
 
@@ -184,7 +185,7 @@ function showAlert(message, type = 'success') {
         setTimeout(() => alert.remove(), 300);
     }, 3000);
 }
-</script>
+</script> --}}
 
 <script>
 const { createApp } = Vue;
@@ -239,11 +240,11 @@ createApp({
         },
         confirmCharge() {
             if (this.cash < this.total) {
-                showAlert('Uang pembeli tidak cukup', 'danger');
+                this.showAlert('Uang pembeli tidak cukup', 'danger');
                 return;
             }
 
-            showAlert('Transaksi berhasil', 'success');
+            this.showAlert('Transaksi berhasil', 'success');
 
             this.cart = {};
             this.cash = 0;
@@ -255,6 +256,24 @@ createApp({
         },
         printReceipt() {
             window.print();
+        },
+        showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alert-container');
+
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type} alert-dismissible fade show shadow`;
+            alert.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+
+            alertContainer.appendChild(alert);
+
+            setTimeout(() => {
+                alert.classList.remove('show');
+                alert.classList.add('hide');
+                setTimeout(() => alert.remove(), 300);
+            }, 3000);
         }
     }
 }).mount('#app');
