@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'subtotal', 'fee', 'total', 'cash', 'change'
+    ];
 
-    // Nama tabel di database
-    protected $table = 'transactions';
-
-    // Kolom-kolom yang dapat diisi secara massal
-    protected $fillable = ['total_price'];
+    public function items()
+    {
+        return $this->hasMany(TransactionItem::class);
+    }
 }

@@ -1,6 +1,7 @@
 @extends('layout.app')
 
 @section('content')
+<div class="container mt-4">
     <div class="card shadow-sm">
         <div class="card-body">
 
@@ -51,6 +52,7 @@
 
         </div>
     </div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {

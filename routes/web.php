@@ -24,4 +24,4 @@ Route::put('/food/{id}', [MenuController::class, 'update']);
 Route::delete('/food/{id}', [MenuController::class, 'destroy']);
 
 Route::get('/transaksi', [TransactionController::class, 'index']);
-
+Route::post('/transactions', [TransactionController::class, 'store']);
